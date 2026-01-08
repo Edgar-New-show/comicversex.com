@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta name="rating" content="adult">
+<meta name="RATING" content="RTA-5042-1996-1404-30-177-10" />
+<meta name="keywords" content="porn-comic, porn art, animes hetai, hetai elotico">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ComicVerse</title>
+
+  <!-- Fonte -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  
+  <div id="ageModal" class="age-modal">
+  <div class="age-box">
+    <h2>🔞 Conteúdo para maiores de 18 anos</h2>
+    <p>
+      Este site contém bandas desenhadas destinadas apenas a maiores de idade.
+      Tens 18 anos ou mais?
+    </p>
+
+    <div class="age-buttons">
+      <button id="ageYes">Sim, tenho 18+</button>
+      <button id="ageNo">Não</button>
+    </div>
+  </div>
+</div>
+
+<header class="header">
+  <div class="logo">ComicVerseX</div>
+
+<nav class="nav" id="navMenu">
+  <input type="text" id="searchInput" placeholder="Pesquisar..." class="search-input" />
+  <a href="index.html">Início</a>
+  <a href="categorias.html?cat=Anime">Anime</a>
+  <a href="categorias.html?cat=Cartoon">Cartoon</a>
+</nav>
+
+  <div class="menu-toggle" id="menuToggle">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</header>
+<section class="hero">
+  <div class="hero-overlay">
+    <h1 id="heroTitle">Hinata and Naruto</h1>
+    <p id="heroDesc">erotic jutsu</p>
+    <button id="btnLerAgora">Ler agora</button>
+    <script>const btnLerAgora = document.getElementById('btnLerAgora');
+
+btnLerAgora.addEventListener('click', () => {
+  const idBD = 1; // aqui você coloca o ID da BD que quer abrir
+  window.location.href = `ler.html?id=${62764164466}`;
+});</script>
+  </div>
+</section>
+
+
+<section class="section">
+  <h2>🔥 Populares</h2>
+  <div class="comic-grid" id="comicGrid"></div>
+    <!-- Aqui vão os botões da paginação -->
+  <div id="pagination"></div>
+</section>
+
+<footer class="footer">
+  © 2026 ComicVerse • Banda Desenhada
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/age.js"></script>
+<script src="js/paginacao.js"></script>
+</body>
+</html>

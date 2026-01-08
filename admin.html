@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Painel Admin - ComicVerse</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      max-width: 700px;
+      margin: 20px auto;
+      background: #121212;
+      color: white;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #5b5bff;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+    input, select, button, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+      background: #222;
+      color: white;
+    }
+    input[type="file"] {
+      padding: 3px;
+    }
+    button {
+      margin-top: 20px;
+      background-color: #5b5bff;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #4444ff;
+    }
+    .json-output {
+      background: #222;
+      padding: 15px;
+      margin-top: 30px;
+      white-space: pre-wrap;
+      height: 250px;
+      overflow-y: scroll;
+      font-family: monospace;
+      border-radius: 6px;
+    }
+    .pages-list {
+      margin-top: 10px;
+    }
+    .page-item {
+      margin-bottom: 5px;
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Painel Admin - ComicVerseX</h1>
+
+  <form id="comicForm">
+    <label for="comicId">ID da BD (Número único):</label>
+    <input type="number" id="comicId" name="comicId" readonly placeholder="Será gerado automaticamente" />
+
+    <label for="comicTitle">Título da BD:</label>
+    <input type="text" id="comicTitle" name="comicTitle" required placeholder="Ex: O Guardião de Luanda" />
+
+    <label for="comicCategory">Categoria:</label>
+    <select id="comicCategory" name="comicCategory" required>
+      <option value="">-- Selecione --</option>
+      <option value="Ação">Ação</option>
+      <option value="Anime">Anime</option>
+      <option value="Cartoon">Cartoon</option>
+      <option value="Mangá">Mangá</option>
+      <option value="Outros">Outros</option>
+    </select>
+
+    <label for="comicCover">Capa (URL da imagem):</label>
+    <input type="text" id="comicCover" name="comicCover" required placeholder="Ex: img/bd_1/capa.jpg" />
+
+    <hr />
+
+    <h3>Adicionar páginas da BD</h3>
+
+    <label for="pagesInput">URLs das páginas (uma por linha):</label>
+    <textarea id="pagesInput" rows="6" placeholder="Ex:
+img/bd_1/pag1.jpg
+img/bd_1/pag2.jpg
+img/bd_1/pag3.jpg"></textarea>
+
+    <button type="button" id="addComicBtn">Adicionar / Atualizar BD</button>
+  </form>
+
+  <h2>JSON Atualizado:</h2>
+  <pre id="jsonOutput" class="json-output">Carregando...</pre>
+
+  <script>
+    // Pega os dados do localStorage ou inicia vazio
+    let comics = JSON.parse(localStorage.getItem('comicsData')) || [];
+
+    const form = document.getElementById('comicForm');
+    const jsonOutput = document.getElementById('jsonOutput');
+    const addBtn = document.getElementById('addComicBtn');
+    const inputId = document.getElementById('comicId');
+
+    // Função para atualizar o JSON visível
+    function updateJSONOutput() {
+      jsonOutput.textContent = JSON.stringify(comics, null, 2);
+    }
+
+    // Inicializa o JSON na tela
+    updateJSONOutput();
+
+    // Função para gerar ID aleatório único
+    function generateUniqueId() {
+      let id;
+      do {
+        id = Math.floor(Math.random() * 1_000_000_000_000); // até 1 trilhão, dá bastante espaço
+      } while (comics.some(c => c.id === id));
+      return id;
+    }
+
+    // Adicionar ou atualizar BD no array
+    addBtn.addEventListener('click', () => {
+      let id = Number(form.comicId.value.trim());
+
+      // Se ID não preenchido, gera automaticamente
+      if (!id) {
+        id = generateUniqueId();
+        inputId.value = id; // mostra no campo para referência
+      }
+
+      const title = form.comicTitle.value.trim();
+      const category = form.comicCategory.value;
+      const cover = form.comicCover.value.trim();
+      const pagesRaw = form.pagesInput.value.trim();
+
+      if (!title || !category || !cover) {
+        alert('Por favor, preencha todos os campos obrigatórios.');
+        return;
+      }
+
+      // Processa páginas (quebra por linha)
+      let pages = [];
+      if (pagesRaw) {
+        pages = pagesRaw.split('\n').map(p => p.trim()).filter(p => p);
+      }
+
+      // Verifica se já existe a BD com esse id
+      const existingIndex = comics.findIndex(c => c.id === id);
+
+      const newComic = {
+        id,
+        titulo: title,
+        categoria: category,
+        capitulos: pages.length,
+        capa: cover,
+        paginas: pages
+      };
+
+      if (existingIndex >= 0) {
+        // Atualiza BD existente
+        comics[existingIndex] = newComic;
+      } else {
+        // Adiciona nova BD
+        comics.push(newComic);
+      }
+
+      // Salva no localStorage
+      localStorage.setItem('comicsData', JSON.stringify(comics));
+
+      // Atualiza saída
+      updateJSONOutput();
+
+      // Limpa o formulário menos o ID (pra facilitar nova inserção)
+      form.comicTitle.value = '';
+      form.comicCategory.value = '';
+      form.comicCover.value = '';
+      form.pagesInput.value = '';
+
+      alert('BD adicionada/atualizada com sucesso! Você pode copiar o JSON abaixo para seu arquivo comics.json.');
+    });
+  </script>
+</body>
+</html>

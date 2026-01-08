@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ComicVerse</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="CSS/style.css">
+  <link rel="stylesheet" href="CSS/categorias.css">
+</head>
+
+<body>
+
+
+<header class="header">
+  <div class="logo">ComicVerseX</div>
+
+<nav class="nav" id="navMenu">
+  <input type="text" id="searchInput" placeholder="Pesquisar..." class="search-input" />
+  <a href="index.html">Início</a>
+  <a href="categorias.html?cat=Anime">Anime</a>
+  <a href="categorias.html?cat=Cartoon">Cartoon</a>
+</nav>
+
+  <div class="menu-toggle" id="menuToggle">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</header>
+
+<main class="categories-page">
+
+  <h2 id="categoryTitle"></h2>
+
+  <div class="comic-grid" id="comicGrid"></div>
+      <!-- Aqui vão os botões da paginação -->
+  <div id="pagination"></div>
+
+</main>
+
+<footer class="footer">
+  © 2026 ComicVerse • Banda Desenhada
+</footer>
+<script src="js/main.js"></script>
+<script src="js/categorias.js"></script>
+<script src="js/paginacao.js"></script>
+</body>
+</html>
